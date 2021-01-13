@@ -69,14 +69,57 @@ for row in range(size):
             play_grid[row][column] = total
 pprint(play_grid)
 
+def do_thing_that_is_cool(grid1, grid2, row, col):
+    grid1[row][col] = 2
+    if row != 0:
+        if grid1[row - 1][col] != 2:
+            grid1[row - 1][col] = 1
+            if grid2[row - 1][col] == 0:
+                do_thing_that_is_cool(grid1, grid2, row - 1, col)
+    if row != 0 and col != 0:
+        if grid1[row - 1][col - 1] != 2:
+            grid1[row - 1][col - 1] = 1
+            if grid2[row - 1][col - 1] == 0:
+                do_thing_that_is_cool(grid1, grid2, row - 1, col - 1)
+    if row != 0 and col != size - 1:
+        if grid1[row - 1][col + 1] != 2:
+            grid1[row - 1][col + 1] = 1
+            if grid2[row - 1][col + 1] == 0:
+                do_thing_that_is_cool(grid1, grid2, row - 1, col + 1)
+    if row != size - 1:
+        if grid1[row + 1][col] != 2:
+            grid1[row + 1][col] = 1
+            if grid2[row + 1][col] == 0:
+                do_thing_that_is_cool(grid1, grid2, row + 1, col)
+    if row != size - 1 and col != 0:
+        if grid1[row + 1][col - 1] != 2:
+            grid1[row + 1][col - 1] = 1
+            if grid2[row + 1][col - 1] == 0:
+                do_thing_that_is_cool(grid1, grid2, row + 1, col - 1)
+    if row != size - 1 and col != size - 1:
+        if grid1[row + 1][col + 1] != 2:
+            grid1[row + 1][col + 1] = 1
+            if grid2[row + 1][col + 1] == 0:
+                do_thing_that_is_cool(grid1, grid2, row + 1, col + 1)
+    if row != 0:
+        if grid1[row][col - 1] != 2:
+            grid1[row][col - 1] = 1
+            if grid2[row][col - 1] == 0:
+                do_thing_that_is_cool(grid1, grid2, row, col - 1)
+    if col != size - 1:
+        if grid1[row][col + 1] != 2:
+            grid1[row][col + 1] = 1
+            if grid2[row][col + 1] == 0:
+                do_thing_that_is_cool(grid1, grid2, row, col + 1)
+
 clock = pygame.time.Clock()
 
 done = False
 while not done:
     screen.fill((0,0,0))
-    for event in pygame.event.get():  # User did something
-        if event.type == pygame.QUIT:  # If user clicked close
-            done = True  # Flag that we are done so we exit this loop
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
             pygame.quit()
 
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -90,6 +133,9 @@ while not done:
                 pygame.quit()
                 exit()
             if game_grid[row][column] == 0:
+                if play_grid[row][column] == 0:
+                    do_thing_that_is_cool(game_grid, play_grid, row, column)
+                    
                 game_grid[row][column] = 1
 
         if event.type == pygame.KEYDOWN:
@@ -109,7 +155,7 @@ while not done:
     for row in range(size):
         for column in range(size):
             color = GREY
-            if game_grid[row][column] == 1:
+            if game_grid[row][column] == 1 or game_grid[row][column] == 2:
                 if play_grid[row][column] == 9:
                     color = RED
                 elif play_grid[row][column] != 0 and play_grid[row][column] != 9:
