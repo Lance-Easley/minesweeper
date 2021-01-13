@@ -31,86 +31,94 @@ pygame.display.set_caption('Minesweeper')
 
 size = 25
 
-play_grid = []
-game_grid = []
-for row in range(size):
-    # Add an empty array that will hold each cell
-    # in this row
-    play_grid.append([])
-    game_grid.append([])
-    for column in range(size):
-        rand = random.randint(0, (size//4) - 1)
-        if rand == 0 and row != 0 and row != size - 1 and column != 0 and column != size - 1:
-            play_grid[row].append(9)  # Append a cell
-        else:
-            play_grid[row].append(0)
-        game_grid[row].append(0)
+def generate_grids(grid1, grid2):
+    for row in range(size):
+        # Add an empty array that will hold each cell
+        # in this row
+        grid1.append([])
+        grid2.append([])
+        for column in range(size):
+            rand = random.randint(0, (size//4) - 1)
+            if rand == 0 and row != 0 and row != size - 1 and column != 0 and column != size - 1:
+                grid1[row].append(9)  # Append a cell
+            else:
+                grid1[row].append(0)
+            grid2[row].append(0)
 
-for row in range(size):
-    for column in range(size):
-        if play_grid[row][column] != 9:
-            total = 0
-            if row != 0 and play_grid[row - 1][column] == 9:
-                total += 1
-            if row != 0 and column != 0 and play_grid[row - 1][column - 1] == 9:
-                total += 1
-            if row != 0 and column != size - 1 and play_grid[row - 1][column + 1] == 9:
-                total += 1
-            if row != size - 1 and play_grid[row + 1][column] == 9:
-                total += 1
-            if row != size - 1 and column != 0 and play_grid[row + 1][column - 1] == 9:
-                total += 1
-            if row != size - 1 and column != size - 1 and play_grid[row + 1][column + 1] == 9:
-                total += 1
-            if row != 0 and play_grid[row][column - 1] == 9:
-                total += 1
-            if column != size - 1 and play_grid[row][column + 1] == 9:
-                total += 1
-            play_grid[row][column] = total
-pprint(play_grid)
+    for row in range(size):
+        for column in range(size):
+            if grid1[row][column] != 9:
+                total = 0
+                if row != 0 and grid1[row - 1][column] == 9:
+                    total += 1
+                if row != 0 and column != 0 and grid1[row - 1][column - 1] == 9:
+                    total += 1
+                if row != 0 and column != size - 1 and grid1[row - 1][column + 1] == 9:
+                    total += 1
+                if row != size - 1 and grid1[row + 1][column] == 9:
+                    total += 1
+                if row != size - 1 and column != 0 and grid1[row + 1][column - 1] == 9:
+                    total += 1
+                if row != size - 1 and column != size - 1 and grid1[row + 1][column + 1] == 9:
+                    total += 1
+                if row != 0 and grid1[row][column - 1] == 9:
+                    total += 1
+                if column != size - 1 and grid1[row][column + 1] == 9:
+                    total += 1
+                grid1[row][column] = total
+    return grid1, grid2
 
-def do_thing_that_is_cool(grid1, grid2, row, col):
+def check_adjacents(grid1, grid2, row, col):
     grid1[row][col] = 2
     if row != 0:
         if grid1[row - 1][col] != 2:
             grid1[row - 1][col] = 1
             if grid2[row - 1][col] == 0:
-                do_thing_that_is_cool(grid1, grid2, row - 1, col)
+                check_adjacents(grid1, grid2, row - 1, col)
     if row != 0 and col != 0:
         if grid1[row - 1][col - 1] != 2:
             grid1[row - 1][col - 1] = 1
             if grid2[row - 1][col - 1] == 0:
-                do_thing_that_is_cool(grid1, grid2, row - 1, col - 1)
+                check_adjacents(grid1, grid2, row - 1, col - 1)
     if row != 0 and col != size - 1:
         if grid1[row - 1][col + 1] != 2:
             grid1[row - 1][col + 1] = 1
             if grid2[row - 1][col + 1] == 0:
-                do_thing_that_is_cool(grid1, grid2, row - 1, col + 1)
+                check_adjacents(grid1, grid2, row - 1, col + 1)
     if row != size - 1:
         if grid1[row + 1][col] != 2:
             grid1[row + 1][col] = 1
             if grid2[row + 1][col] == 0:
-                do_thing_that_is_cool(grid1, grid2, row + 1, col)
+                check_adjacents(grid1, grid2, row + 1, col)
     if row != size - 1 and col != 0:
         if grid1[row + 1][col - 1] != 2:
             grid1[row + 1][col - 1] = 1
             if grid2[row + 1][col - 1] == 0:
-                do_thing_that_is_cool(grid1, grid2, row + 1, col - 1)
+                check_adjacents(grid1, grid2, row + 1, col - 1)
     if row != size - 1 and col != size - 1:
         if grid1[row + 1][col + 1] != 2:
             grid1[row + 1][col + 1] = 1
             if grid2[row + 1][col + 1] == 0:
-                do_thing_that_is_cool(grid1, grid2, row + 1, col + 1)
+                check_adjacents(grid1, grid2, row + 1, col + 1)
     if row != 0:
         if grid1[row][col - 1] != 2:
             grid1[row][col - 1] = 1
             if grid2[row][col - 1] == 0:
-                do_thing_that_is_cool(grid1, grid2, row, col - 1)
+                check_adjacents(grid1, grid2, row, col - 1)
     if col != size - 1:
         if grid1[row][col + 1] != 2:
             grid1[row][col + 1] = 1
             if grid2[row][col + 1] == 0:
-                do_thing_that_is_cool(grid1, grid2, row, col + 1)
+                check_adjacents(grid1, grid2, row, col + 1)
+
+while True:
+    play_grid = []
+    game_grid = []
+    generate_grids(play_grid, game_grid)
+    if play_grid[size // 2][size // 2] == 0:
+        game_grid[size // 2][size // 2] = 1
+        check_adjacents(game_grid, play_grid, size // 2, size // 2)
+        break
 
 clock = pygame.time.Clock()
 
@@ -134,7 +142,7 @@ while not done:
                 exit()
             if game_grid[row][column] == 0:
                 if play_grid[row][column] == 0:
-                    do_thing_that_is_cool(game_grid, play_grid, row, column)
+                    check_adjacents(game_grid, play_grid, row, column)
                     
                 game_grid[row][column] = 1
 
