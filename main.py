@@ -100,7 +100,7 @@ def check_adjacents(grid1, grid2, row, col):
             grid1[row + 1][col + 1] = 1
             if grid2[row + 1][col + 1] == 0:
                 check_adjacents(grid1, grid2, row + 1, col + 1)
-    if row != 0:
+    if row != 0 and col != 0:
         if grid1[row][col - 1] != 2:
             grid1[row][col - 1] = 1
             if grid2[row][col - 1] == 0:
