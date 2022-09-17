@@ -46,28 +46,30 @@ def generate_grids(solved, display):
         for column in range(size):
             if solved[row][column] != 9:
                 total = 0
-                if solved[max(0, row - 1)][column] == 9:
+
+                if row != 0 and solved[row - 1][column] == 9:
                     total += 1
-                if solved[max(0, row - 1)][max(0, column - 1)] == 9:
+                if row != 0 and column != 0 and solved[row - 1][column - 1] == 9:
                     total += 1
-                if solved[max(0, row - 1)][min(size - 1, column + 1)] == 9:
+                if row != 0 and column != size - 1 and solved[row - 1][column + 1] == 9:
                     total += 1
-                if solved[min(size - 1, row + 1)][column] == 9:
+                if row != size - 1 and solved[row + 1][column] == 9:
                     total += 1
-                if solved[min(size - 1, row + 1)][max(0, column - 1)] == 9:
+                if row != size - 1 and column != 0 and solved[row + 1][column - 1] == 9:
                     total += 1
-                if solved[min(size - 1, row + 1)][min(size - 1, column + 1)] == 9:
+                if row != size - 1 and column != size - 1 and solved[row + 1][column + 1] == 9:
                     total += 1
-                if solved[row][max(0, column - 1)] == 9:
+                if column != 0 and solved[row][column - 1] == 9:
                     total += 1
-                if solved[row][min(size - 1, column + 1)] == 9:
+                if column != size - 1 and solved[row][column + 1] == 9:
                     total += 1
+
                 solved[row][column] = total
     return solved, display
 
 def check_adjacents(solved, display, row, col):
     solved[row][col] = 2
-
+    
     if solved[max(0, row - 1)][col] != 2:
         solved[max(0, row - 1)][col] = 1
         if display[max(0, row - 1)][col] == 0:
